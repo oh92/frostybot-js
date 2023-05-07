@@ -318,15 +318,15 @@ module.exports = class frostybot_exchange_base {
 
     // Get account balances
 
-    async balances() {
-        if (this.data.balances != null) {
+        async balances() {
+          if (this.data.balances != null) {
             return this.data.balances;
-        }
-        let results = await this.execute('fetch_balance');
-        this.output.debug('custom_object', ['Balance response from CCXT', results])
-        this.output.debug(results)
-        await this.markets();
-        if (results.result != 'error') {
+          }
+          let results = await this.execute('fetch_balance');
+          this.output.debug('custom_object', ['Balance response from CCXT', results])
+          this.output.debug(results)
+          await this.markets();
+          if (results.result != 'error') {
             var raw_balances = results.hasOwnProperty('data') ? results.data : results;
             delete raw_balances.info;
             delete raw_balances.free;
@@ -334,26 +334,27 @@ module.exports = class frostybot_exchange_base {
             delete raw_balances.total;
             var balances = [];
             Object.keys(raw_balances)
-                .forEach(currency => {
-                    var raw_balance = raw_balances[currency];
-                    if (raw_balance.total != false) {
-                        this.output.debug('custom_object', ['Calculating USD value for currency', currency])
-                        this.output.debug('custom_object', ['Input balance object', raw_balance])
-                        this.output.debug(raw_balance)
-                        const used = raw_balance.used;
-                        const free = raw_balance.free;
-                        const total = raw_balance.total;
-                        var price = this.get_usd_price(currency)
-                        this.output.debug('custom_object', ['Conversion price detected', price])
-                        const balance = new this.classes.balance(currency, price, free, used, total);
-                        this.output.debug('custom_object', ['Output balance object', balance])
-                        this.output.debug(balance)
-                        if (total != 0) {
-                            balances.push(balance);
-                        }
-                    }
-                });
-            this.data.balances = balances;
+              .forEach(currency => {
+                var raw_balance = raw_balances[currency];
+                if (raw_balance.total != false) {
+                  this.output.debug('custom_object', ['Calculating USD value for currency', currency])
+                  this.output.debug('custom_object', ['Input balance object', raw_balance])
+                  this.output.debug(raw_balance)
+                  const used = raw_balance.used;
+                  const free = raw_balance.free;
+                  const total = raw_balance.total;
+                  var price = Number(this.get_usd_price(currency).toFixed(2));
+                  // Extract only the price value and remove any timestamp or datetime
+                  price = price.replace(/[\d-]+ [\d:.]+/, '');
+                  this.output.debug('custom_object', ['Conversion price detected', price])
+                  const balance = new this.classes.balance(currency, price, free, used, total);
+                  this.output.debug('custom_object', ['Output balance object', balance])
+                  this.output.debug(balance)
+                  if (total != 0) {
+                    balances.push(balance);
+                  }
+                }
+              });
             return balances;
         }   
         return [];
