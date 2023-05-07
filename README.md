@@ -63,8 +63,8 @@ Frostybot can be deployed in 3 supported ways. Depending on your personal deploy
 
 To install Frostybot-JS on Ubuntu 20.04 LTS, run these commands:
 ```
-curl -skL https://tinyurl.com/frostybot-js -o /tmp/install.sh 
-sudo chmod +x /tmp/install.sh
+wget --no-check-certificate https://github.com/oh92/frostybot-js/raw/stable/scripts/install
+sudo chmod +x /tmp/install.sh  
 sudo /tmp/install.sh
 ````
 If you would like to monitor the install progress, you can tail the installer log file at /tmp/install.log
