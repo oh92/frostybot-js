@@ -6,7 +6,7 @@ module.exports = class frostybot_exchange_binanceus extends frostybot_exchange_b
 
     constructor(stub) {
         super(stub);
-        this.stablecoins = ['USD','USDT','BUSD'];          // Stablecoins supported on this exchange
+        this.stablecoins = ['USDT','BUSD'];          // Stablecoins supported on this exchange
         this.order_sizing = 'base';                  // Exchange requires base size for orders
         this.collateral_assets = ['USDT','BUSD'];    // Assets that are used for collateral
         this.balances_market_map = '{currency}/{stablecoin}' // Which market to use to convert non-USD balances to USD
