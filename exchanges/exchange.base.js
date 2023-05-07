@@ -323,8 +323,8 @@ module.exports = class frostybot_exchange_base {
             return this.data.balances;
         }
         let results = await this.execute('fetch_balance');
-        //this.output.debug('custom_object', ['Balance response from CCXT', results])
-        //this.output.debug(results)
+        this.output.debug('custom_object', ['Balance response from CCXT', results])
+        this.output.debug(results)
         await this.markets();
         if (results.result != 'error') {
             var raw_balances = results.hasOwnProperty('data') ? results.data : results;
@@ -337,17 +337,17 @@ module.exports = class frostybot_exchange_base {
                 .forEach(currency => {
                     var raw_balance = raw_balances[currency];
                     if (raw_balance.total != false) {
-                        //this.output.debug('custom_object', ['Calculating USD value for currency', currency])
-                        //this.output.debug('custom_object', ['Input balance object', raw_balance])
-                        //this.output.debug(raw_balance)
+                        this.output.debug('custom_object', ['Calculating USD value for currency', currency])
+                        this.output.debug('custom_object', ['Input balance object', raw_balance])
+                        this.output.debug(raw_balance)
                         const used = raw_balance.used;
                         const free = raw_balance.free;
                         const total = raw_balance.total;
                         var price = this.get_usd_price(currency)
-                        //this.output.debug('custom_object', ['Conversion price detected', price])
+                        this.output.debug('custom_object', ['Conversion price detected', price])
                         const balance = new this.classes.balance(currency, price, free, used, total);
-                        //this.output.debug('custom_object', ['Output balance object', balance])
-                        //this.output.debug(balance)
+                        this.output.debug('custom_object', ['Output balance object', balance])
+                        this.output.debug(balance)
                         if (total != 0) {
                             balances.push(balance);
                         }
